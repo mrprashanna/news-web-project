@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorldLens - Your View of the World</title>
+    
+    <!-- Google Fonts: Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Feather Icons for UI elements -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <style>
+        /* CSS Styling */
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #f4f4f4;
+            --accent-color: #007BFF;
+            --accent-hover: #0056b3;
+            --text-color: #333;
+            --light-text: #f8f9fa;
+            --border-color: #e0e0e0;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Header & Navigation --- */
+        .main-header {
+            background-color: var(--card-bg);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .main-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .main-nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .main-nav a:hover {
+            color: var(--accent-color);
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .auth-buttons button {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn {
+            background-color: transparent;
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+        }
+        
+        .login-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--light-text);
+        }
+
+        .signup-btn {
+            background-color: var(--accent-color);
+            color: var(--light-text);
+        }
+        
+        .signup-btn:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .mobile-menu-toggle {
+            display: none;
+            cursor: pointer;
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            padding: 2rem 0;
+        }
+
+        .hero-section {
+            background: url('https://placehold.co/1200x500/333/FFF?text=Top+Story') no-repeat center center/cover;
+            height: 500px;
+            border-radius: 10px;
+            display: flex;
+            align-items: flex-end;
+            padding: 2rem;
+            color: var(--light-text);
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            border-radius: 10px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-content .category-badge {
+             background-color: var(--accent-color);
+             color: var(--light-text);
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            margin-top: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+
+        /* --- News Grid --- */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .news-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .news-card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .news-card-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: var(--accent-color);
+            color: var(--light-text);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .news-card-content h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            flex-grow: 1;
+        }
+        
+        .news-card-content h3 a {
+            text-decoration: none;
+            color: var(--text-color);
+            transition: color 0.3s ease;
+        }
+        
+        .news-card-content h3 a:hover {
+            color: var(--accent-color);
+        }
+
+        .article-meta {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .article-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+            margin-top: auto;
+        }
+
+        .vote-buttons, .comment-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .vote-buttons button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: #555;
+            transition: color 0.3s ease;
+        }
+        
+        .vote-buttons button:hover {
+            color: var(--accent-color);
+        }
+        
+        .vote-buttons button.active {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        /* --- Footer --- */
+        .main-footer {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 3rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--light-text);
+        }
+        
+        .newsletter-form input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #555;
+            border-radius: 5px;
+            background: #333;
+            color: var(--light-text);
+            margin-bottom: 0.5rem;
+        }
+        
+        .newsletter-form button {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--accent-color);
+            color: var(--light-text);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .newsletter-form button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #444;
+            font-size: 0.9rem;
+        }
+        
+        /* --- Modals --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 450px;
+            position: relative;
+            animation: slide-down 0.4s ease-out;
+        }
+        
+        @keyframes slide-down {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-content h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+        }
+        
+        .form-group button {
+            width: 100%;
+            padding: 0.9rem;
+            background-color: var(--accent-color);
+            color: var(--light-text);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        
+        .form-group button:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 992px) {
+            .news-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--card-bg);
+                box-shadow: var(--shadow);
+                flex-direction: column;
+                padding: 1rem 0;
+            }
+            
+            .main-nav.active {
+                display: flex;
+            }
+            
+            .main-nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 1.5rem;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header-actions .auth-buttons {
+                display: none; /* Hide buttons on very small screens, can be moved to menu */
+            }
+            .hero-section {
+                height: 400px;
+            }
+            .hero-section h1 {
+                font-size: 1.8rem;
+            }
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <a href="#" class="logo">WorldLens</a>
+            <nav class="main-nav" id="main-nav">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Politics</a></li>
+                    <li><a href="#">Technology</a></li>
+                    <li><a href="#">Business</a></li>
+                    <li><a href="#">Culture</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="auth-buttons">
+                    <button class="login-btn" id="login-btn">Log In</button>
+                    <button class="signup-btn" id="signup-btn">Sign Up</button>
+                </div>
+                <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+                    <i data-feather="menu"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Hero Section for Top Story -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <span class="category-badge">Technology</span>
+                    <h1>The Future of AI: How Machine Learning is Reshaping Our World</h1>
+                </div>
+            </section>
+
+            <!-- News Articles Grid -->
+            <section class="news-grid" id="news-grid">
+                <!-- News cards will be dynamically inserted here by JavaScript -->
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About WorldLens</h4>
+                    <p>Your lens into the stories that shape our world. We bring you unbiased, in-depth reporting from across the globe.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#" style="color: inherit; text-decoration: none;">About Us</a></li>
+                        <li><a href="#" style="color: inherit; text-decoration: none;">Contact</a></li>
+                        <li><a href="#" style="color: inherit; text-decoration: none;">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Subscribe to our Newsletter</h4>
+                    <form class="newsletter-form" id="newsletter-form">
+                        <input type="email" placeholder="Enter your email" required>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 WorldLens. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Log In</h2>
+            <form>
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Log In</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sign Up Modal -->
+    <div id="signup-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Sign Up</h2>
+            <form>
+                <div class="form-group">
+                    <label for="signup-name">Full Name</label>
+                    <input type="text" id="signup-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Create Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for interactivity
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Feather Icons Activation ---
+            feather.replace();
+
+            // --- Mobile Menu Toggle ---
+            const menuToggle = document.getElementById('mobile-menu-toggle');
+            const mainNav = document.getElementById('main-nav');
+            menuToggle.addEventListener('click', () => {
+                mainNav.classList.toggle('active');
+            });
+
+            // --- Modal Handling ---
+            const loginModal = document.getElementById('login-modal');
+            const signupModal = document.getElementById('signup-modal');
+            const loginBtn = document.getElementById('login-btn');
+            const signupBtn = document.getElementById('signup-btn');
+            const closeBtns = document.querySelectorAll('.close-btn');
+
+            loginBtn.onclick = () => loginModal.style.display = 'block';
+            signupBtn.onclick = () => signupModal.style.display = 'block';
+
+            closeBtns.forEach(btn => {
+                btn.onclick = () => {
+                    loginModal.style.display = 'none';
+                    signupModal.style.display = 'none';
+                };
+            });
+
+            window.onclick = (event) => {
+                if (event.target == loginModal || event.target == signupModal) {
+                    loginModal.style.display = 'none';
+                    signupModal.style.display = 'none';
+                }
+            };
+            
+            // --- Newsletter Subscription ---
+            const newsletterForm = document.getElementById('newsletter-form');
+            newsletterForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Thank you for subscribing!'); // Placeholder for actual logic
+                newsletterForm.reset();
+            });
+
+            // --- Dynamic News Article Loading (from Backend) ---
+async function fetchAndRenderArticles() {
+    try {
+        const response = await fetch('http://localhost:3000/api/articles');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const articles = await response.json();
+        renderArticles(articles); // Pass the fetched articles to your render function
+    } catch (error) {
+        console.error("Could not fetch articles:", error);
+        // Optionally display an error message to the user on the page
+        document.getElementById('news-grid').innerHTML = '<p>Sorry, we could not load the news right now. Please try again later.</p>';
+    }
+}
+
+// You'll need to modify renderArticles to accept the data
+function renderArticles(articles) {
+    const newsGrid = document.getElementById('news-grid');
+    newsGrid.innerHTML = ''; // Clear existing articles
+    articles.forEach(article => {
+        // ... your existing card creation logic ...
+    });
+    feather.replace();
+}
+
+// Call the new function when the page loads
+fetchAndRenderArticles();
+
+            const newsGrid = document.getElementById('news-grid');
+            
+            function renderArticles() {
+                newsGrid.innerHTML = ''; // Clear existing articles
+                sampleArticles.forEach(article => {
+                    const articleCard = document.createElement('article');
+                    articleCard.className = 'news-card';
+                    articleCard.innerHTML = `
+                        <img src="${article.imageUrl}" alt="${article.title}" class="news-card-img">
+                        <div class="news-card-content">
+                            <span class="category-badge">${article.category}</span>
+                            <h3><a href="#">${article.title}</a></h3>
+                            <div class="article-meta">
+                                <span>By ${article.author}</span> | <span>${article.date}</span>
+                            </div>
+                            <div class="article-actions">
+                                <div class="vote-buttons" data-id="${article.id}">
+                                    <button class="upvote-btn">
+                                        <i data-feather="arrow-up" width="18" height="18"></i> 
+                                        <span>${article.upvotes}</span>
+                                    </button>
+                                    <button class="downvote-btn">
+                                        <i data-feather="arrow-down" width="18" height="18"></i> 
+                                        <span>${article.downvotes}</span>
+                                    </button>
+                                </div>
+                                <div class="comment-info">
+                                    <i data-feather="message-square" width="18" height="18"></i> 
+                                    <span>${article.comments}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    newsGrid.appendChild(articleCard);
+                });
+                feather.replace(); // Re-initialize icons after adding new elements
+            }
+
+            renderArticles();
+
+            // --- Vote Button Interaction (Placeholder) ---
+            newsGrid.addEventListener('click', (e) => {
+                const upvoteBtn = e.target.closest('.upvote-btn');
+                const downvoteBtn = e.target.closest('.downvote-btn');
+
+                if (upvoteBtn) {
+                    // Placeholder: Toggle active state and update count
+                    // In a real app, you'd send a request to the backend
+                    upvoteBtn.classList.toggle('active');
+                    // Prevent activating both
+                    const parent = upvoteBtn.parentElement;
+                    parent.querySelector('.downvote-btn').classList.remove('active');
+                    console.log(`Upvoted article #${parent.dataset.id}`);
+                }
+
+                if (downvoteBtn) {
+                    // Placeholder: Toggle active state
+                    downvoteBtn.classList.toggle('active');
+                    // Prevent activating both
+                    const parent = downvoteBtn.parentElement;
+                    parent.querySelector('.upvote-btn').classList.remove('active');
+                    console.log(`Downvoted article #${parent.dataset.id}`);
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>
